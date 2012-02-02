@@ -2,13 +2,20 @@ vows = require 'vows'
 assert = require 'assert'
 NitroHack = require '../index'
 
-exports.initialization = vows.describe('Initializing')
+exports.interface = vows.describe('Interface')
   .addBatch
-    'a new Client':
+    'Class Level':
       topic: ->
         return NitroHack
       'should be callable': (hack) ->
         assert.isFunction hack
+      'when initialized':
+        topic: (hack) ->
+          return new hack
+        'should use localhost by default': (instance) ->
+          assert.equal instance.host, "localhost"
+        'should use default nitrohack port': (instance) ->
+          assert.equal instance.port, 1234
 
 
 exports.authentication = vows.describe('Authenticating with the Server')
