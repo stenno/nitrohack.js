@@ -8,7 +8,7 @@
     "url": "git://github.com/stenno/nitrohack.js.git"
   },
   "engines": {
-    "node": "0.6.9-pre"
+    "node": ">=0.6.x"
   },
   "dependencies": {},
   "devDependencies": {},
