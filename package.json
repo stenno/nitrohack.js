@@ -10,8 +10,13 @@
   "engines": {
     "node": ">=0.6.x"
   },
+  "scripts": {
+    "test": "vows --spec spec/*.coffee"
+  },
   "main": "index.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "vows": "*"
+  },
   "optionalDependencies": {}
 }
