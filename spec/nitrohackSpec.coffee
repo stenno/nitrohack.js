@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-NitroHack = require 'nitrohack'
+NitroHack = require '../index'
 
 exports.initialization = vows.describe('Initializing')
   .addBatch
@@ -9,6 +9,7 @@ exports.initialization = vows.describe('Initializing')
         return NitroHack
       'should be callable': (hack) ->
         assert.isFunction hack
+        
 
 exports.authentication = vows.describe('Authenticating with the Server')
   .addBatch
