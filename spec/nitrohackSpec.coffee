@@ -15,7 +15,7 @@ exports.interface = vows.describe('Interface')
         'should use localhost by default': (instance) ->
           assert.equal instance.host, "localhost"
         'should use default nitrohack port': (instance) ->
-          assert.equal instance.port, 1234
+          assert.equal instance.port, 7115
 
 
 exports.authentication = vows.describe('Authenticating with the Server')
