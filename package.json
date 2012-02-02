@@ -1,0 +1,16 @@
+{
+  "author": "stenno <nitrohack.js@app42.de>",
+  "name": "nitrohack.js",
+  "description": "Client for nitrohack_server",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stenno/nitrohack.js.git"
+  },
+  "engines": {
+    "node": "0.6.9-pre"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
