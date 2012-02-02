@@ -1,6 +1,6 @@
 {
   "author": "stenno <nitrohack.js@app42.de>",
-  "name": "nitrohack.js",
+  "name": "nitrohack",
   "description": "Client for nitrohack_server",
   "version": "0.0.1",
   "repository": {
