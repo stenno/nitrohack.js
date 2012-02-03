@@ -16,8 +16,8 @@ exports.interface = vows.describe('Interface')
           assert.equal instance.host, "localhost"
         'should use default nitrohack port': (instance) ->
           assert.equal instance.port, 7115
-        'should have an auth function': ->
-          assert.isFunction auth
+        'should have an auth function': (instance) ->
+          assert.isFunction instance.auth
 
 
 
