@@ -29,6 +29,7 @@ exports.authentication = vows.describe('Authenticating with the Server')
         nitro = new NitroHack
 
         # Setup callbacks
+        self = this
         nitro.on "authenticated", ->
           self.callback null, true
         nitro.on "error", (err) ->
