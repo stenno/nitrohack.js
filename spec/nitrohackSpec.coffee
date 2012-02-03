@@ -26,10 +26,18 @@ exports.authentication = vows.describe('Authenticating with the Server')
     'when supplying valid credentials':
       topic: ->
         # initialize a new client
-        # connecting with valid credentials
         nitro = new NitroHack
+
+        # Setup callbacks
+        nitro.on "authenticated", ->
+          self.callback null, true
+        nitro.on "error", (err) ->
+          self.callback err
+
+        # connecting with valid credentials
         nitro.auth("stenno","supersecurenitrohackpassword")
-        return false
+
+        return undefined
       'we should be connected': (success) ->
         assert.isTrue success
 
