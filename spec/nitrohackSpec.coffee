@@ -24,10 +24,8 @@ exports.authentication = vows.describe('Authenticating with the Server')
       topic: ->
         # initialize a new client
         # connecting with valid credentials
-        nitro = new NitroHack(ip, port)
-        nitro.auth(user, pass, reconnect)
-
-
+        nitro = new NitroHack
+        nitro.auth("stenno","supersecurenitrohackpassword")
         return false
       'we should be connected': (success) ->
         assert.isTrue success
@@ -36,10 +34,10 @@ exports.startingGame = vows.describe('Starting a new Game')
   .addBatch
     'when authenticated':
       topic: ->
-        nitro.start_game(name, other_params)
+        nitro.startGame("stennoasc");
 
 exports.answeringQuestion = vows.describe('Answering a Question')
   .addBatch
     'when the game has started':
       topic: ->
-        nitro.bind("yn", yn_handler)
+        nitro.bind("yn")
