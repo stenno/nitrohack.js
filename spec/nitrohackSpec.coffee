@@ -21,7 +21,7 @@ exports.interface = vows.describe('Interface')
 
 exports.registration = vows.describe('Registration on the Server')
   .addBatch
-    'when supplying credentials that are not already taken':
+    'when supplying valid credentials':
       topic: ->
         nitro = new NitroHack
         self = this
@@ -56,6 +56,7 @@ exports.authentication = vows.describe('Authenticating with the Server')
       'we should be connected': (success) ->
         console.log(success)
         assert.isTrue success
+        
   
 exports.startingGame = vows.describe('Starting a new Game')
   .addBatch

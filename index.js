@@ -12,16 +12,26 @@ var nitro = function() {
     this.on('data', function(data) {
       pdata = JSON.parse(data);
       var msgtype = Object.keys(pdata)[0];
-      console.log("got msgtype " + msgtype)
-      console.log("and payload " + msgtype)
+      //console.log(msgtype + ":");
+      //console.log(pdata[msgtype]);
       switch(msgtype) {
         case 'auth': 
-          socket.emit('authenticated');
+          if (pdata.return == 4)
+            socket.emit('authenticated');
+          else
+            socket.emit('error');
+        break;
+        case 'register':
+          if (pdata.return == 0)
+            socket.emit('registered');
+          else
+            socket.emit('error')
         break;
         default:
           socket.emit('error');
         break;
-      }      
+
+      }
     });
 };
 
@@ -34,5 +44,13 @@ nitro.prototype.auth = function(username, password) {
     socket.write(JSON.stringify(cmd));  
   });
 };
+
+nitro.prototype.register = function(username, password) {
+  var socket = this;
+  var cmd = {"register":{"username": username, "password": password}};
+  this.connect(this.port, this.host, function() {
+    socket.write(JSON.stringify(cmd));
+  })
+}
 
 module.exports = nitro;
