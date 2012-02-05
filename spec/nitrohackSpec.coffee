@@ -33,13 +33,14 @@ exports.authentication = vows.describe('Authenticating with the Server')
         nitro.on "authenticated", ->
           self.callback null, true
         nitro.on "error", (err) ->
-          self.callback err
+          self.callback true
 
         # connecting with valid credentials
-        nitro.auth("stenno","supersecurenitrohackpassword")
+        nitro.auth("stenno","stenno")
 
-        return undefined
+        return undefined  
       'we should be connected': (success) ->
+        console.log(success)
         assert.isTrue success
 
 exports.startingGame = vows.describe('Starting a new Game')

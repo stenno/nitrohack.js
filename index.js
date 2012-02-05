@@ -7,10 +7,20 @@ var nitro = function() {
     this.port = 7115;
     Socket.call(this);
     this.setEncoding('utf8');
-    this.on('data') = function(data) {
+    var socket = this;
+    this.on('data', function(data) {
       pdata = JSON.parse(data);
-      data("");
-    }
+      var msgtype = Object.keys(pdata)[0];
+      console.log("got msgtype " + msgtype)
+      switch(msgtype) {
+        case 'auth': 
+          socket.emit('authenticated');
+        break;
+        default:
+          socket.emit('error');
+        break;
+      }      
+    });
 };
 
 util.inherits(nitro, Socket);
