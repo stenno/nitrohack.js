@@ -8,10 +8,12 @@ var nitro = function() {
     Socket.call(this);
     this.setEncoding('utf8');
     var socket = this;
+
     this.on('data', function(data) {
       pdata = JSON.parse(data);
       var msgtype = Object.keys(pdata)[0];
       console.log("got msgtype " + msgtype)
+      console.log("and payload " + msgtype)
       switch(msgtype) {
         case 'auth': 
           socket.emit('authenticated');

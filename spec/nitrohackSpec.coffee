@@ -19,6 +19,20 @@ exports.interface = vows.describe('Interface')
         'should have an auth function': (instance) ->
           assert.isFunction instance.auth
 
+exports.registration = vows.describe('Registration on the Server')
+  .addBatch
+    'when supplying credentials that are not already taken':
+      topic: ->
+        nitro = new NitroHack
+        self = this
+        nitro.on "registered", ->
+          self.callback null, true
+        nitro.on "error", (err) ->
+          self.callback true
+        nitro.register("stenno2","stenno2")
+        return undefined
+      'we should be registered on the server': (success) ->
+        assert.isTrue(success)
 
 
 exports.authentication = vows.describe('Authenticating with the Server')
@@ -42,7 +56,7 @@ exports.authentication = vows.describe('Authenticating with the Server')
       'we should be connected': (success) ->
         console.log(success)
         assert.isTrue success
-
+  
 exports.startingGame = vows.describe('Starting a new Game')
   .addBatch
     'when authenticated':
