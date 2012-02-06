@@ -29,11 +29,10 @@ exports.registration = vows.describe('Registration on the Server')
           nitro.on "registered", ->
             self.callback null, true
           nitro.on "error", (err) ->
-            self.callback true
+            self.callback err
           nitro.register("stenno2","stenno2")
           return undefined
         'we should be registered on the server': (error, registered, nitro) ->
-          
           assert.isTrue registered
 
         'with new account':
@@ -43,7 +42,7 @@ exports.registration = vows.describe('Registration on the Server')
             nitro.on "authenticated", ->
               self.callback null, true
             nitro.on "error", (err) ->
-              self.callback true
+              self.callback err
 
             # connecting with valid credentials
 
