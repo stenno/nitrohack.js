@@ -21,18 +21,35 @@ exports.interface = vows.describe('Interface')
 
 exports.registration = vows.describe('Registration on the Server')
   .addBatch
-    'when supplying valid credentials':
-      topic: ->
-        nitro = new NitroHack
-        self = this
-        nitro.on "registered", ->
-          self.callback null, true
-        nitro.on "error", (err) ->
-          self.callback true
-        nitro.register("stenno2","stenno2")
-        return undefined
-      'we should be registered on the server': (success) ->
-        assert.isTrue(success)
+    'with nitro':
+      topic: new NitroHack
+      'when supplying valid credentials':
+        topic: (nitro) ->
+          self = this
+          nitro.on "registered", ->
+            self.callback null, true
+          nitro.on "error", (err) ->
+            self.callback true
+          nitro.register("stenno2","stenno2")
+          return undefined
+        'we should be registered on the server': (registered, nitro) ->
+          assert.isTrue registered
+        'with new account':
+          topic: (registered, nitro) ->
+            # Setup callbacks
+            self = this
+            nitro.on "authenticated", ->
+              self.callback null, true
+            nitro.on "error", (err) ->
+              self.callback true
+
+            # connecting with valid credentials
+
+            nitro.auth("stenno2", "stenno2")
+
+            return undefined
+          'we should be able to authenticate': (success) ->
+            assert.isTrue success
 
 
 exports.authentication = vows.describe('Authenticating with the Server')
@@ -52,12 +69,12 @@ exports.authentication = vows.describe('Authenticating with the Server')
         # connecting with valid credentials
         nitro.auth("stenno","stenno")
 
-        return undefined  
+        return undefined
       'we should be connected': (success) ->
         console.log(success)
         assert.isTrue success
-        
-  
+
+
 exports.startingGame = vows.describe('Starting a new Game')
   .addBatch
     'when authenticated':
