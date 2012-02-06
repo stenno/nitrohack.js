@@ -7,8 +7,8 @@ var nitro = function() {
     this.port = 7115;
     Socket.call(this);
     this.setEncoding('utf8');
+    this.connected = false;
     var socket = this;
-
     this.on('data', function(data) {
       pdata = JSON.parse(data);
       var msgtype = Object.keys(pdata)[0];
@@ -37,20 +37,28 @@ var nitro = function() {
 
 util.inherits(nitro, Socket);
 
+nitro.prototype.request = function(msgtype, params) {
+  if (this.connected)
+    this.write(JSON.stringify({msgtype: params}));
+  else {
+    var socket = this;
+    this.connect(this.port, this.host, function() {
+      socket.connected = true;
+      socket.write(JSON.stringify({msgtype: params}));
+    })
+  }
+};
+
 nitro.prototype.auth = function(username, password) {
-  var socket = this;
-  var cmd = {"auth":{"username": username, "password": password}};
-  this.connect(this.port, this.host, function() {
-    socket.write(JSON.stringify(cmd));  
-  });
+  var msgtype = "auth";
+  var params = {"username": username, "password": password};
+  this.request(msgtype, params);
 };
 
 nitro.prototype.register = function(username, password) {
-  var socket = this;
-  var cmd = {"register":{"username": username, "password": password}};
-  this.connect(this.port, this.host, function() {
-    socket.write(JSON.stringify(cmd));
-  })
-}
+  var msgtype = "register";
+  var params = {"username": username, "password": password};
+  this.request(msgtype, params);
+};
 
 module.exports = nitro;
