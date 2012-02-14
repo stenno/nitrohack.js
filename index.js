@@ -2,9 +2,9 @@ var util = require('util');
 var net = require('net');
 var Socket = net.Socket;
 
-var nitro = function() {
+var Nitro = function() {
     this.host = 'localhost';
-    this.port = 7115;
+    this.port = 7116;
     Socket.call(this);
     this.setEncoding('utf8');
     this.connected = false;
@@ -12,20 +12,22 @@ var nitro = function() {
     this.on('data', function(data) {
       pdata = JSON.parse(data);
       var msgtype = Object.keys(pdata)[0];
+      var body = pdata[msgtype];
+      //console.log("Got " + data);
       //console.log(msgtype + ":");
       //console.log(pdata[msgtype]);
       switch(msgtype) {
         case 'auth': 
-          if (pdata.return == 4)
+          if (body['return'] == 3 || body['return'] == 4)
             socket.emit('authenticated');
           else
             socket.emit('error');
         break;
         case 'register':
-          if (pdata.return == 0)
+          if (body['return'] == 3)
             socket.emit('registered');
           else
-            socket.emit('error')
+            socket.emit('error');
         break;
         default:
           socket.emit('error');
@@ -35,30 +37,20 @@ var nitro = function() {
     });
 };
 
-util.inherits(nitro, Socket);
+util.inherits(Nitro, Socket);
 
-nitro.prototype.request = function(msgtype, params) {
-  if (this.connected)
-    this.write(JSON.stringify({msgtype: params}));
-  else {
-    var socket = this;
-    this.connect(this.port, this.host, function() {
-      socket.connected = true;
-      socket.write(JSON.stringify({msgtype: params}));
-    })
-  }
+Nitro.prototype.request = function(data) {
+  this.write(JSON.stringify(data));
 };
 
-nitro.prototype.auth = function(username, password) {
-  var msgtype = "auth";
+Nitro.prototype.auth = function(username, password) {
   var params = {"username": username, "password": password};
-  this.request(msgtype, params);
+  this.request({"auth": params});
 };
 
-nitro.prototype.register = function(username, password) {
-  var msgtype = "register";
+Nitro.prototype.register = function(username, password) {
   var params = {"username": username, "password": password};
-  this.request(msgtype, params);
+  this.request({"register": params});
 };
 
-module.exports = nitro;
+module.exports = Nitro;
